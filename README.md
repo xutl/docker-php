@@ -1,2 +1,11 @@
 # docker-php
-While designed for web development, the PHP scripting language also provides general-purpose use.
+
+[![Build Status](https://travis-ci.org/xutl/docker-php.svg?branch=master)](https://travis-ci.org/xutl/docker-php)
+
+```shell
+docker build --build-arg PHP_VERSION=5.4.45 .
+
+docker build --build-arg PHP_VERSION=5.5.37 .
+
+docker build --build-arg PHP_VERSION=5.6.32 .
+```

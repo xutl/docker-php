@@ -1,0 +1,78 @@
+language: bash
+
+sudo: required
+
+services:
+  - docker
+
+env:
+#   5.4
+  - VERSION=5.4 VARIANT=centos7/cli PHP_VERSION=5.4.45
+  - VERSION=5.4 VARIANT=jessie/cli PHP_VERSION=5.4.45
+  - VERSION=5.4 VARIANT=centos7/fpm PHP_VERSION=5.4.45
+  - VERSION=5.4 VARIANT=jessie/fpm PHP_VERSION=5.4.45
+#   5.5
+  - VERSION=5.5 VARIANT=centos7/cli PHP_VERSION=5.5.37
+  - VERSION=5.5 VARIANT=jessie/cli PHP_VERSION=5.5.37
+  - VERSION=5.5 VARIANT=centos7/fpm PHP_VERSION=5.5.37
+  - VERSION=5.5 VARIANT=jessie/fpm PHP_VERSION=5.5.37
+#   5.6
+  - VERSION=5.6 VARIANT=centos7/cli PHP_VERSION=5.6.32
+  - VERSION=5.6 VARIANT=jessie/cli PHP_VERSION=5.6.32
+  - VERSION=5.6 VARIANT=centos7/fpm PHP_VERSION=5.6.32
+  - VERSION=5.6 VARIANT=jessie/fpm PHP_VERSION=5.6.32
+##   7.0
+#  - VERSION=7.0 VARIANT=centos7/cli PHP_VERSION=7.0.26
+#  - VERSION=7.0 VARIANT=centos7/fpm PHP_VERSION=7.0.26
+#  - VERSION=7.0 VARIANT=jessie/cli PHP_VERSION=7.0.26
+#  - VERSION=7.0 VARIANT=jessie/fpm PHP_VERSION=7.0.26
+##   7.1
+#  - VERSION=7.1 VARIANT=centos7/cli PHP_VERSION=7.1.12
+#  - VERSION=7.1 VARIANT=centos7/fpm PHP_VERSION=7.1.12
+#  - VERSION=7.1 VARIANT=jessie/cli PHP_VERSION=7.1.12
+#  - VERSION=7.1 VARIANT=jessie/fpm PHP_VERSION=7.1.12
+##   7.0
+#  - VERSION=7.2 VARIANT=centos7/cli PHP_VERSION=7.2.0
+#  - VERSION=7.2 VARIANT=centos7/fpm PHP_VERSION=7.2.0
+#  - VERSION=7.2 VARIANT=jessie/cli PHP_VERSION=7.2.0
+#  - VERSION=7.2 VARIANT=jessie/fpm PHP_VERSION=7.2.0
+
+before_install:
+  - export DOCKER_COMPOSE_VERSION=1.17.1
+  - sudo rm /usr/local/bin/docker-compose
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
+before_script:
+  - env | sort
+  - cd "$VERSION/$VARIANT"
+  - SUBVARIANT="${VARIANT#*/}"
+  - image="xutl/php:${VERSION}-${SUBVARIANT}-${VARIANT%/*}"
+
+script:
+  - travis_retry docker build --build-arg PHP_VERSION=${PHP_VERSION} -t "$image" .
+
+after_success:
+  - if [ "$TRAVIS_BRANCH" == "master" ]; then
+      docker login --username="${DOCKER_REGISTRY_USER}" --password="${DOCKER_REGISTRY_PASSWORD}";
+      docker push $image;
+      if [ "${VARIANT%/*}" == "jessie" ]; then
+        docker tag $image xutl/php:${VERSION}-${SUBVARIANT};
+        docker push xutl/php:${VERSION}-${SUBVARIANT};
+        docker tag $image xutl/php:${PHP_VERSION}-${SUBVARIANT};
+        docker push xutl/php:${PHP_VERSION}-${SUBVARIANT};
+        if [ "${VERSION}" == "7.1" ]; then
+          if [ "${SUBVARIANT}" == "fpm" ]; then
+            docker tag $image xutl/php:latest;
+            docker push xutl/php:latest;
+            docker tag $image xutl/php:${PHP_VERSION};
+            docker push xutl/php:${PHP_VERSION};
+            docker tag $image xutl/php:${VERSION};
+            docker push xutl/php:${VERSION};
+          fi
+        fi
+      fi
+    fi
+
+# vim:set et ts=2 sw=2:
