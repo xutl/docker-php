@@ -1,1 +1,1 @@
-echo "PHP version: $(php -v)"
+echo "$(php -v)"
