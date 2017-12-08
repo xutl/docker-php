@@ -34,8 +34,8 @@ env:
 #  - VERSION=7.0 VARIANT=jessie/fpm PHP_VERSION=7.0.26
 #  - VERSION=7.0 VARIANT=stretch/cli PHP_VERSION=7.0.26
 #  - VERSION=7.0 VARIANT=stretch/fpm PHP_VERSION=7.0.26
-  - VERSION=7.0 VARIANT=xenial/cli PHP_VERSION=7.0.26
-  - VERSION=7.0 VARIANT=xenial/fpm PHP_VERSION=7.0.26
+#  - VERSION=7.0 VARIANT=xenial/cli PHP_VERSION=7.0.26
+#  - VERSION=7.0 VARIANT=xenial/fpm PHP_VERSION=7.0.26
 #   7.1
 #  - VERSION=7.1 VARIANT=centos7/cli PHP_VERSION=7.1.12
 #  - VERSION=7.1 VARIANT=centos7/fpm PHP_VERSION=7.1.12
@@ -55,8 +55,8 @@ env:
 #  - VERSION=7.2 VARIANT=jessie/fpm PHP_VERSION=7.2.0
 #  - VERSION=7.2 VARIANT=stretch/cli PHP_VERSION=7.2.0
 #  - VERSION=7.2 VARIANT=stretch/fpm PHP_VERSION=7.2.0
-  - VERSION=7.2 VARIANT=xenial/cli PHP_VERSION=7.2.0
-  - VERSION=7.2 VARIANT=xenial/fpm PHP_VERSION=7.2.0
+#  - VERSION=7.2 VARIANT=xenial/cli PHP_VERSION=7.2.0
+#  - VERSION=7.2 VARIANT=xenial/fpm PHP_VERSION=7.2.0
 
 before_install:
   - export DOCKER_COMPOSE_VERSION=1.17.1
@@ -78,7 +78,7 @@ after_success:
   - if [ "$TRAVIS_BRANCH" == "master" ]; then
       docker login --username="${DOCKER_REGISTRY_USER}" --password="${DOCKER_REGISTRY_PASSWORD}";
       docker push $image;
-      if [ "${VARIANT%/*}" == "stretch" ]; then
+      if [ "${VARIANT%/*}" == "xenial" ]; then
         docker tag $image xutl/php:${VERSION}-${SUBVARIANT};
         docker push xutl/php:${VERSION}-${SUBVARIANT};
         docker tag $image xutl/php:${PHP_VERSION}-${SUBVARIANT};
