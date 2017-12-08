@@ -27,7 +27,21 @@ ARG PHP_VERSION=7.1.12
 
 ENV PHP_INI_DIR=/usr/local/etc
 
-RUN cd /usr/local/src &&curl -L -o php-${PHP_VERSION}.tar.gz http://cn2.php.net/get/php-${PHP_VERSION}.tar.gz/from/this/mirror && \
+# Apply stack smash protection to functions using local buffers and alloca()
+# Make PHP's main executable position-independent (improves ASLR security mechanism, and has no performance impact on x86_64)
+# Enable optimization (-O2)
+# Enable linker optimization (this sorts the hash buckets to improve cache locality, and is non-default)
+# Adds GNU HASH segments to generated executables (this is used if present, and is much faster than sysv hash; in this configuration, sysv hash is also generated)
+# https://github.com/docker-library/php/issues/272
+ENV PHP_CFLAGS="-fstack-protector-strong -fpic -fpie -O2"
+ENV PHP_CPPFLAGS="$PHP_CFLAGS"
+ENV PHP_LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie"
+
+RUN cd /usr/local/src && \
+    export CFLAGS="$PHP_CFLAGS" \
+    CPPFLAGS="$PHP_CPPFLAGS" \
+    LDFLAGS="$PHP_LDFLAGS" && \
+    curl -L -o php-${PHP_VERSION}.tar.gz http://cn2.php.net/get/php-${PHP_VERSION}.tar.gz/from/this/mirror && \
     tar zxf php-${PHP_VERSION}.tar.gz && rm -f php-${PHP_VERSION}.tar.gz && cd php-${PHP_VERSION} && \
     ./configure --prefix=/usr/local --libdir=/usr/local/lib64 --with-config-file-path=${PHP_INI_DIR} --with-config-file-scan-dir=${PHP_INI_DIR}/php \
     --with-libxml-dir --with-openssl --with-kerberos --with-zlib --enable-bcmath --with-bz2 --enable-calendar --with-curl \
