@@ -7,7 +7,7 @@ ENV PHPIZE_DEPS autoconf dpkg-dev file g++ gcc libc-dev libpcre3-dev make pkg-co
 
 RUN apt-get update && apt-get install -y $PHPIZE_DEPS ca-certificates curl libedit2 libsqlite3-0 libxml2 libmpfr-dev \
     libpcre3-dev libcurl4-openssl-dev libedit-dev libsqlite3-dev libssl-dev libicu-dev libfreetype6-dev libjpeg-dev \
-    libpnglite-dev libsasl2-dev libmhash-dev libevent-dev libjpeg62-turbo-dev libpng12-dev libtidy-dev libxslt-dev \
+    libpnglite-dev libsasl2-dev libmhash-dev libevent-dev libjpeg62-turbo-dev libpng-dev libtidy-dev libxslt-dev \
     libmemcached-dev libbz2-dev libxml2-dev libgmp-dev libzip-dev libyaml-dev libmcrypt-dev --no-install-recommends && \
     rm -r /var/lib/apt/lists/* && rm -f /etc/ld.so.conf.d/libc.conf && \
     echo -e "/lib64\n/usr/lib64\n/usr/local/lib64\n/lib\n/usr/lib\n/usr/local/lib" > /etc/ld.so.conf.d/libc.conf && \
@@ -18,7 +18,7 @@ RUN cd /usr/local/src && curl -o libiconv-1.15.tar.gz  https://ftp.gnu.org/pub/g
     ./configure --prefix=/usr/local --libdir=/usr/local/lib64 --enable-static && \
     make && make install && rm -rf /usr/local/src/libiconv-1.15
 
-ARG PHP_VERSION=7.1.12
+ARG PHP_VERSION=7.0.25
 
 ENV PHP_INI_DIR=/usr/local/etc
 
@@ -52,7 +52,7 @@ RUN cd /usr/local/src && \
 
 ENV MSGPACK_VERSION=2.0.2 \
     IGBINARY_VERSION=2.0.5 \
-    MEMCACHED_VERSION=3.0.4 \
+    MEMCACHED_VERSION=3.0.3 \
     REDIS_VERSION=3.1.4 \
     YAML_VERSION=2.0.2
 
