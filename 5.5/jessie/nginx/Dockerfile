@@ -8,7 +8,7 @@ ENV PHPIZE_DEPS autoconf dpkg-dev file g++ gcc libc-dev libpcre3-dev make pkg-co
 RUN apt-get update && apt-get install -y $PHPIZE_DEPS ca-certificates curl libedit2 libsqlite3-0 libxml2 libmpfr-dev \
     libpcre3-dev libcurl4-openssl-dev libedit-dev libsqlite3-dev libssl-dev libicu-dev libfreetype6-dev libjpeg-dev \
     libpnglite-dev libsasl2-dev libmhash-dev libevent-dev libjpeg62-turbo-dev libpng12-dev libtidy-dev libxslt-dev \
-    libmemcached-dev libbz2-dev libxml2-dev libgmp-dev libyaml-dev libmcrypt-dev --no-install-recommends && \
+    libmemcached-dev libbz2-dev libxml2-dev libgmp-dev libyaml-dev libmcrypt-dev libgd-dev --no-install-recommends && \
     rm -r /var/lib/apt/lists/* && rm -f /etc/ld.so.conf.d/libc.conf && \
     echo -e "/lib64\n/usr/lib64\n/usr/local/lib64\n/lib\n/usr/lib\n/usr/local/lib" > /etc/ld.so.conf.d/libc.conf && \
     /sbin/ldconfig && /usr/sbin/groupadd -r www && groupmod -g 1000 www && /usr/sbin/useradd -r -M -g www www && usermod -u 1000 www
