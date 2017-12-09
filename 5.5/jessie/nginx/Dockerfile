@@ -5,10 +5,10 @@ MAINTAINER XUTONGLE <xutongle@gmail.com>
 # persistent / runtime deps
 ENV PHPIZE_DEPS autoconf dpkg-dev file g++ gcc libc-dev libpcre3-dev make pkg-config re2c
 
-RUN apt-get update && apt-get install -y $PHPIZE_DEPS supervisor ca-certificates curl libedit2 libsqlite3-0 libxml2 libmpfr-dev \
+RUN apt-get update && apt-get install -y $PHPIZE_DEPS ca-certificates curl libedit2 libsqlite3-0 libxml2 libmpfr-dev \
     libpcre3-dev libcurl4-openssl-dev libedit-dev libsqlite3-dev libssl-dev libicu-dev libfreetype6-dev libjpeg-dev \
     libpnglite-dev libsasl2-dev libmhash-dev libevent-dev libjpeg62-turbo-dev libpng12-dev libtidy-dev libxslt-dev \
-    libmemcached-dev libbz2-dev libxml2-dev libgmp-dev libyaml-dev libmcrypt-dev libgd-dev --no-install-recommends && \
+    libmemcached-dev libbz2-dev libxml2-dev libgmp-dev libyaml-dev libmcrypt-dev --no-install-recommends && \
     rm -r /var/lib/apt/lists/* && rm -f /etc/ld.so.conf.d/libc.conf && \
     echo -e "/lib64\n/usr/lib64\n/usr/local/lib64\n/lib\n/usr/lib\n/usr/local/lib" > /etc/ld.so.conf.d/libc.conf && \
     /sbin/ldconfig && /usr/sbin/groupadd -r www && groupmod -g 1000 www && /usr/sbin/useradd -r -M -g www www && usermod -u 1000 www
@@ -18,7 +18,7 @@ RUN cd /usr/local/src && curl -o libiconv-1.15.tar.gz  https://ftp.gnu.org/pub/g
     ./configure --prefix=/usr/local --libdir=/usr/local/lib64 --enable-static && \
     make && make install && rm -rf /usr/local/src/libiconv-1.15
 
-ARG PHP_VERSION=5.4.45
+ARG PHP_VERSION=5.5.37
 
 ENV PHP_INI_DIR=/usr/local/etc
 
@@ -48,7 +48,7 @@ RUN cd /usr/local/src && \
     --enable-sysvsem --enable-sysvshm --enable-wddx --with-xmlrpc --with-libedit --with-iconv-dir=/usr/local --with-xsl \
     --enable-zip --with-pcre-regex --with-freetype-dir --enable-xml  --with-mysqli=mysqlnd \
     --with-pdo-mysql=mysqlnd --with-pdo-sqlite --with-sqlite3 --disable-rpath --enable-inline-optimization  --with-mcrypt \
-    --with-mhash --enable-pcntl --without-pear --with-gettext --enable-fileinfo --enable-intl --enable-cli \
+    --with-mhash --enable-pcntl --without-pear --with-gettext --enable-fileinfo --enable-intl --enable-opcache --enable-cli \
     --with-gmp --with-tidy --with-pcre-dir --with-readline --with-zlib-dir --with-libdir=lib64 && \
     make ZEND_EXTRA_LIBS='-liconv' &&  make install && rm -rf /usr/local/src/php-${PHP_VERSION} && \
     mkdir -p ${PHP_INI_DIR}/php && mkdir -p /var/lib/php
