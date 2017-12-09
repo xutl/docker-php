@@ -111,7 +111,10 @@ ADD run.sh /run.sh
 
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log && \
-    chmod 700 /run.sh
+    chmod 700 /run.sh && \
+
+    echo '<?php phpinfo;?>'; > /usr/local/html/info.php && \
+    chmod 755 /usr/local/html/info.php
 
 EXPOSE 80
 
