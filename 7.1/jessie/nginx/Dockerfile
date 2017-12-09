@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM debian:jessie
 
 MAINTAINER XUTONGLE <xutongle@gmail.com>
 
@@ -7,7 +7,7 @@ ENV PHPIZE_DEPS autoconf dpkg-dev file g++ gcc libc-dev libpcre3-dev make pkg-co
 
 RUN apt-get update && apt-get install -y $PHPIZE_DEPS ca-certificates curl libedit2 libsqlite3-0 libxml2 libmpfr-dev \
     libpcre3-dev libcurl4-openssl-dev libedit-dev libsqlite3-dev libssl-dev libicu-dev libfreetype6-dev libjpeg-dev \
-    libpnglite-dev libsasl2-dev libmhash-dev libevent-dev libjpeg-dev libpng-dev libtidy-dev libxslt-dev \
+    libpnglite-dev libsasl2-dev libmhash-dev libevent-dev libjpeg62-turbo-dev libpng12-dev libtidy-dev libxslt-dev \
     libmemcached-dev libbz2-dev libxml2-dev libgmp-dev libzip-dev libyaml-dev libmcrypt-dev libgd-dev --no-install-recommends && \
     rm -r /var/lib/apt/lists/* && rm -f /etc/ld.so.conf.d/libc.conf && \
     echo -e "/lib64\n/usr/lib64\n/usr/local/lib64\n/lib\n/usr/lib\n/usr/local/lib" > /etc/ld.so.conf.d/libc.conf && \
@@ -88,7 +88,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 
 ENV NGINX_INI_DIR=/usr/local/etc
 
-ENV NGINX_VERSION=1.13.7
+ARG NGINX_VERSION=1.13.7
 
 RUN cd /usr/local/src && curl -o /usr/local/src/nginx-${NGINX_VERSION}.tar.gz http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
     tar zxf nginx-${NGINX_VERSION}.tar.gz && rm -rf nginx-${NGINX_VERSION}.tar.gz && cd nginx-${NGINX_VERSION}/ && \
@@ -116,4 +116,3 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/
 EXPOSE 80
 
 CMD ["/run.sh"]
-
