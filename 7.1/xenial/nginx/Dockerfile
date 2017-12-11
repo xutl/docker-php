@@ -20,6 +20,7 @@ RUN cd /usr/local/src && curl -o libiconv-1.15.tar.gz  https://ftp.gnu.org/pub/g
 ARG PHP_VERSION=7.1.12
 
 ENV PHP_INI_DIR=/usr/local/etc
+ENV NGINX_INI_DIR=/usr/local/etc/nginx
 
 # Apply stack smash protection to functions using local buffers and alloca()
 # Make PHP's main executable position-independent (improves ASLR security mechanism, and has no performance impact on x86_64)
@@ -85,13 +86,11 @@ RUN cd /usr/local/src && curl -o yaml-${YAML_VERSION}.tgz http://pecl.php.net/ge
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer && php -r "unlink('composer-setup.php');"
 
-ENV NGINX_INI_DIR=/usr/local/etc
-
 ENV NGINX_VERSION=1.13.7
 
 RUN cd /usr/local/src && curl -o /usr/local/src/nginx-${NGINX_VERSION}.tar.gz http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
     tar zxf nginx-${NGINX_VERSION}.tar.gz && rm -rf nginx-${NGINX_VERSION}.tar.gz && cd nginx-${NGINX_VERSION}/ && \
-    ./configure --prefix=/usr/local --conf-path=${NGINX_INI_DIR}/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log \
+    ./configure --prefix=/usr/local --conf-path=${NGINX_INI_DIR}/nginx.conf --error-log-path=/var/log/nginx/error.log \
     --http-client-body-temp-path=/var/lib/nginx/body --http-fastcgi-temp-path=/var/lib/nginx/fastcgi \
     --http-log-path=/var/log/nginx/access.log --http-proxy-temp-path=/var/lib/nginx/proxy \
     --lock-path=/run/lock/nginx.lock --pid-path=/run/nginx.pid --with-http_ssl_module --with-http_v2_module \

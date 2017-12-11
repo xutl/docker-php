@@ -19,7 +19,11 @@ RUN cd /usr/local/src && curl -o libiconv-1.15.tar.gz  https://ftp.gnu.org/pub/g
 
 ARG PHP_VERSION=5.5.37
 
+# Environment settings
 ENV PHP_INI_DIR=/usr/local/etc
+ENV PATH=/root/.composer/vendor/bin:$PATH \
+    TERM=linux \
+    COMPOSER_ALLOW_SUPERUSER=1
 
 # Apply stack smash protection to functions using local buffers and alloca()
 # Make PHP's main executable position-independent (improves ASLR security mechanism, and has no performance impact on x86_64)
@@ -97,5 +101,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 
 # Add configuration files
 COPY image-files/ /
+
+VOLUME ["/root/.composer"]
 
 CMD ["php", "-a"]
