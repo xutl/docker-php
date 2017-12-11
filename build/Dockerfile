@@ -1,4 +1,4 @@
-FROM xutl/php:7.1-build
+FROM xutl/php:7.1-fpm
 
 MAINTAINER XUTONGLE <xutongle@gmail.com>
 
