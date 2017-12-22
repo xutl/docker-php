@@ -21,7 +21,8 @@ ARG PHP_VERSION
 
 # Environment settings
 ENV PHP_VERSION ${PHP_VERSION:-5.6.32}
-ENV PHP_INI_DIR=/usr/local/etc
+ENV PHP_TGZ_URL http://php.net/distributions/php-${PHP_VERSION}.tar.gz
+ENV PHP_INI_DIR /usr/local/etc
 ENV PATH=/root/.composer/vendor/bin:$PATH \
     TERM=linux \
     COMPOSER_ALLOW_SUPERUSER=1
@@ -40,7 +41,7 @@ RUN cd /usr/local/src && \
     export CFLAGS="$PHP_CFLAGS" \
     CPPFLAGS="$PHP_CPPFLAGS" \
     LDFLAGS="$PHP_LDFLAGS" && \
-    curl -o php-${PHP_VERSION}.tar.gz http://php.net/distributions/php-${PHP_VERSION}.tar.gz && \
+    curl -o php-${PHP_VERSION}.tar.gz ${PHP_TGZ_URL} && \
     tar zxf php-${PHP_VERSION}.tar.gz && rm -f php-${PHP_VERSION}.tar.gz && cd php-${PHP_VERSION} && /sbin/ldconfig && \
     if [ ! -f /usr/include/gmp.h ]; then \
         ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h; \
