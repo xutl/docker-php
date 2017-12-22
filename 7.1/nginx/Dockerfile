@@ -99,8 +99,5 @@ RUN chmod 700 /run.sh
 
 EXPOSE 80
 
-HEALTHCHECK --interval=5m --timeout=3s \
-  CMD curl -f http://localhost/ || exit 1
-
 CMD ["/run.sh"]
 
