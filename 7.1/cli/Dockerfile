@@ -22,7 +22,7 @@ ARG PHP_VERSION
 # Environment settings
 ENV PHP_VERSION ${PHP_VERSION:-7.1.12}
 ENV PHP_TGZ_URL http://php.net/distributions/php-${PHP_VERSION}.tar.gz
-ENV PHP_INI_DIR=/usr/local/etc
+ENV PHP_INI_DIR /usr/local/etc
 ENV PATH=/root/.composer/vendor/bin:$PATH \
     TERM=linux \
     COMPOSER_ALLOW_SUPERUSER=1
