@@ -21,6 +21,7 @@ ARG PHP_VERSION
 
 # Environment settings
 ENV PHP_VERSION ${PHP_VERSION:-7.1.12}
+ENV PHP_TGZ_URL http://php.net/distributions/php-${PHP_VERSION}.tar.gz
 ENV PHP_INI_DIR=/usr/local/etc
 ENV PATH=/root/.composer/vendor/bin:$PATH \
     TERM=linux \
@@ -40,7 +41,7 @@ RUN cd /usr/local/src && \
     export CFLAGS="$PHP_CFLAGS" \
     CPPFLAGS="$PHP_CPPFLAGS" \
     LDFLAGS="$PHP_LDFLAGS" && \
-    curl -o php-${PHP_VERSION}.tar.gz http://php.net/distributions/php-${PHP_VERSION}.tar.gz && \
+    curl -o php-${PHP_VERSION}.tar.gz ${PHP_TGZ_URL} && \
     tar zxf php-${PHP_VERSION}.tar.gz && rm -f php-${PHP_VERSION}.tar.gz && cd php-${PHP_VERSION} && /sbin/ldconfig && \
     ./configure --prefix=/usr/local --libdir=/usr/local/lib64 --with-config-file-path=${PHP_INI_DIR} --with-config-file-scan-dir=${PHP_INI_DIR}/php \
     --with-libxml-dir --with-openssl --with-kerberos --with-zlib --enable-bcmath --with-bz2 --enable-calendar --with-curl \
