@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM xutl/nginx:1.13.7-xenial
 
 MAINTAINER XUTONGLE <xutongle@gmail.com>
 
@@ -8,7 +8,7 @@ ENV PHPIZE_DEPS autoconf dpkg-dev file g++ gcc libc-dev libpcre3-dev make pkg-co
 RUN apt-get update && apt-get install -y $PHPIZE_DEPS supervisor ca-certificates curl libedit2 libsqlite3-0 libxml2 libmpfr-dev \
     libpcre3-dev libcurl4-openssl-dev libedit-dev libsqlite3-dev libssl-dev libicu-dev libfreetype6-dev libjpeg-dev \
     libpnglite-dev libsasl2-dev libmhash-dev libevent-dev libjpeg-dev libpng-dev libtidy-dev libxslt-dev \
-    libmemcached-dev libbz2-dev libxml2-dev libgmp-dev libzip-dev libyaml-dev libmcrypt-dev libgd-dev --no-install-recommends && \
+    libmemcached-dev libbz2-dev libxml2-dev libgmp-dev libzip-dev libyaml-dev libmcrypt-dev --no-install-recommends && \
     rm -r /var/lib/apt/lists/* && rm -f /etc/ld.so.conf.d/libc.conf && \
     echo -e "/lib64\n/usr/lib64\n/usr/local/lib64\n/lib\n/usr/lib\n/usr/local/lib" > /etc/ld.so.conf.d/libc.conf
 
@@ -22,7 +22,6 @@ ARG PHP_VERSION=7.1.12
 # Environment settings
 ENV PHP_INI_DIR=/usr/local/etc
 ENV PATH=/root/.composer/vendor/bin:$PATH \
-    NGINX_INI_DIR=/usr/local/etc/nginx\
     TERM=linux \
     COMPOSER_ALLOW_SUPERUSER=1
 
@@ -51,7 +50,7 @@ RUN cd /usr/local/src && \
     --with-pdo-mysql=mysqlnd --with-pdo-sqlite --with-sqlite3 --disable-rpath --enable-inline-optimization  --with-mcrypt \
     --with-mhash --enable-pcntl --without-pear --with-gettext --enable-fileinfo --enable-intl --enable-opcache --enable-cli \
     --with-gmp --with-tidy --with-pcre-dir --with-readline --with-zlib-dir --with-libdir=lib64 && \
-    make ZEND_EXTRA_LIBS='-liconv' &&  make install && rm -rf /usr/local/src/php-${PHP_VERSION} && \
+    make &&  make install && rm -rf /usr/local/src/php-${PHP_VERSION} && \
     mkdir -p ${PHP_INI_DIR}/php && mkdir -p /var/lib/php
 
 ENV MSGPACK_VERSION=2.0.2 \
@@ -90,35 +89,17 @@ RUN cd /usr/local/src && curl -o yaml-${YAML_VERSION}.tgz http://pecl.php.net/ge
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
     php composer-setup.php --install-dir=/usr/local/bin --filename=composer && php -r "unlink('composer-setup.php');"
 
-ENV NGINX_VERSION=1.13.7
-
-RUN cd /usr/local/src && curl -o /usr/local/src/nginx-${NGINX_VERSION}.tar.gz http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz && \
-    tar zxf nginx-${NGINX_VERSION}.tar.gz && rm -rf nginx-${NGINX_VERSION}.tar.gz && cd nginx-${NGINX_VERSION}/ && \
-    ./configure --prefix=/usr/local --conf-path=${NGINX_INI_DIR}/nginx.conf --error-log-path=/var/log/nginx/error.log \
-    --http-client-body-temp-path=/var/lib/nginx/body --http-fastcgi-temp-path=/var/lib/nginx/fastcgi \
-    --http-log-path=/var/log/nginx/access.log --http-proxy-temp-path=/var/lib/nginx/proxy \
-    --lock-path=/run/lock/nginx.lock --pid-path=/run/nginx.pid --with-http_ssl_module --with-http_v2_module \
-    --with-http_image_filter_module --with-http_slice_module --with-http_xslt_module --with-http_realip_module \
-    --with-http_stub_status_module --with-pcre --with-pcre-jit --with-http_flv_module --with-http_mp4_module \
-    --with-http_addition_module --with-threads --with-http_secure_link_module --with-http_degradation_module \
-    --with-http_ssl_module --with-http_gzip_static_module --without-mail_imap_module --without-mail_pop3_module \
-    --without-mail_smtp_module --without-http_uwsgi_module --without-http_scgi_module --without-select_module \
-    --with-http_sub_module --with-cc-opt='-O2' && make && make install && mkdir -p /var/lib/nginx && \
-    rm -rf /usr/local/src/nginx-${NGINX_VERSION}
-
 # Add configuration files
 COPY image-files/ /
 
 ADD run.sh /run.sh
 
-# forward request and error logs to docker log collector
-RUN ln -sf /dev/stdout /var/log/nginx/access.log && ln -sf /dev/stderr /var/log/nginx/error.log && \
-    chmod 700 /run.sh && \
-
-    echo '<?php phpinfo;?>'; > /usr/local/html/info.php && \
-    chmod 755 /usr/local/html/info.php
+RUN chmod 700 /run.sh
 
 EXPOSE 80
+
+HEALTHCHECK --interval=5m --timeout=3s \
+  CMD curl -f http://localhost/ || exit 1
 
 CMD ["/run.sh"]
 
