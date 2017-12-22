@@ -51,7 +51,7 @@ RUN cd /usr/local/src && \
     --with-pdo-mysql=mysqlnd --with-pdo-sqlite --with-sqlite3 --disable-rpath --enable-inline-optimization  --with-mcrypt \
     --with-mhash --enable-pcntl --without-pear --with-gettext --enable-fileinfo --enable-intl --enable-opcache --enable-cli \
     --with-gmp --with-tidy --with-pcre-dir --with-readline --with-zlib-dir --with-libdir=lib64 && \
-    make &&  make install && rm -rf /usr/local/src/php-${PHP_VERSION} && \
+    make ZEND_EXTRA_LIBS='-liconv' &&  make install && rm -rf /usr/local/src/php-${PHP_VERSION} && \
     mkdir -p ${PHP_INI_DIR}/php && mkdir -p /var/lib/php
 
 ENV MSGPACK_VERSION=2.0.2 \
