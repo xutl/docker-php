@@ -1,6 +1,6 @@
 FROM ubuntu:xenial
 
-MAINTAINER XUTONGLE <xutongle@gmail.com>
+LABEL maintainer="xutongle@gmail.com"
 
 # persistent / runtime deps
 ENV PHPIZE_DEPS autoconf dpkg-dev file g++ gcc libc-dev libpcre3-dev make pkg-config re2c

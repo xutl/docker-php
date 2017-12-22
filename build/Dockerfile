@@ -1,6 +1,6 @@
 FROM xutl/php:7.1-fpm
 
-MAINTAINER XUTONGLE <xutongle@gmail.com>
+LABEL maintainer="xutongle@gmail.com"
 
 # gpg keys listed at https://github.com/nodejs/node#release-team
 RUN set -ex \
