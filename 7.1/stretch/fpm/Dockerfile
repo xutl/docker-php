@@ -1,6 +1,6 @@
 FROM debian:stretch
 
-MAINTAINER XUTONGLE <xutongle@gmail.com>
+LABEL maintainer="xutongle@gmail.com"
 
 # persistent / runtime deps
 ENV PHPIZE_DEPS autoconf dpkg-dev file g++ gcc libc-dev libpcre3-dev make pkg-config re2c
@@ -17,9 +17,10 @@ RUN cd /usr/local/src && curl -o libiconv-1.15.tar.gz  https://ftp.gnu.org/pub/g
     ./configure --prefix=/usr/local --libdir=/usr/local/lib64 --enable-static && \
     make && make install && rm -rf /usr/local/src/libiconv-1.15
 
-ARG PHP_VERSION=7.1.12
+ARG PHP_VERSION
 
 # Environment settings
+ENV PHP_VERSION ${PHP_VERSION:-7.1.12}
 ENV PHP_INI_DIR=/usr/local/etc
 ENV PATH=/root/.composer/vendor/bin:$PATH \
     TERM=linux \
