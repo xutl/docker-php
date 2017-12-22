@@ -58,4 +58,4 @@ RUN set -ex && \
     ln -s /opt/yarn/bin/yarn /usr/local/bin/yarnpkg && \
     rm yarn-v${YARN_VERSION}.tar.gz.asc yarn-v${YARN_VERSION}.tar.gz
 
-RUN apt-get update && apt-get install -y curl wget nano unzip diffutils ntp openjdk-8-jdk --no-install-recommends && rm -r /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y git subversion curl wget nano unzip diffutils ntp openjdk-8-jdk --no-install-recommends && rm -r /var/lib/apt/lists/*
