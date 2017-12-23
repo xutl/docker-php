@@ -96,4 +96,8 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 COPY image-files/ /
 
 EXPOSE 9000
+
+HEALTHCHECK --interval=5s --timeout=2s --retries=12 \
+  CMD curl --silent --fail localhost:9000 || exit 1
+
 CMD ["php-fpm"]
