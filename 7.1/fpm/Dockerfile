@@ -1,4 +1,4 @@
-FROM ubuntu:xenial
+FROM xutl/base-php:ubuntu-16.04
 
 LABEL maintainer="xutongle@gmail.com"
 
@@ -9,13 +9,7 @@ RUN apt-get update && apt-get install -y $PHPIZE_DEPS ca-certificates curl libed
     libpcre3-dev libcurl4-openssl-dev libedit-dev libsqlite3-dev libssl-dev libicu-dev libfreetype6-dev libjpeg-dev \
     libpnglite-dev libsasl2-dev libmhash-dev libevent-dev libjpeg-dev libpng-dev libtidy-dev libxslt-dev \
     libmemcached-dev libbz2-dev libxml2-dev libgmp-dev libzip-dev libyaml-dev libmcrypt-dev --no-install-recommends && \
-    rm -r /var/lib/apt/lists/* && rm -f /etc/ld.so.conf.d/libc.conf && \
-    echo -e "/lib64\n/usr/lib64\n/usr/local/lib64\n/lib\n/usr/lib\n/usr/local/lib" > /etc/ld.so.conf.d/libc.conf
-
-RUN cd /usr/local/src && curl -o libiconv-1.15.tar.gz  https://ftp.gnu.org/pub/gnu/libiconv/libiconv-1.15.tar.gz && \
-    tar zxf libiconv-1.15.tar.gz && rm -rf libiconv-1.15.tar.gz && cd libiconv-1.15/ && \
-    ./configure --prefix=/usr/local --libdir=/usr/local/lib64 --enable-static && \
-    make && make install && rm -rf /usr/local/src/libiconv-1.15
+    rm -r /var/lib/apt/lists/*
 
 ARG PHP_VERSION
 

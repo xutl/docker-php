@@ -1,4 +1,4 @@
-FROM xutl/nginx:1.13.7-xenial
+FROM xutl/nginx:1.13.8-xenial
 
 LABEL maintainer="xutongle@gmail.com"
 
