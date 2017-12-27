@@ -22,11 +22,6 @@ ENV PHP_CFLAGS="-fstack-protector-strong -fpic -fpie -O2"
 ENV PHP_CPPFLAGS="$PHP_CFLAGS"
 ENV PHP_LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie"
 
-RUN apt-get update
-RUN apt-get install -y --no-install-recommends \
-	mcrypt
-
-
 RUN set -xe \
 	&& buildDeps=" \
 		libmpfr-dev \
@@ -53,7 +48,7 @@ RUN set -xe \
 	" \
 	\
 	&& sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
-	&& apt-get update && apt-get install -y --no-install-recommends --no-install-suggests $buildDeps && rm -r /var/lib/apt/lists/* \
+	&& apt-get update && apt-get install -y --no-install-recommends --no-install-suggests mcrypt $buildDeps && rm -r /var/lib/apt/lists/* \
 	\
 #	&& sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
 	&& cd /usr/local/src \
