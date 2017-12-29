@@ -82,11 +82,14 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log \
 	&& chmod 700 /run.sh \
 	&& {\
-		echo "<?php";
-		echo "phpinfo();";
+		echo "<?php"; \
+		echo "phpinfo();"; \
 	} > /usr/local/html/info.php \
 	&& chmod 775 /usr/local/html/info.php
 
 EXPOSE 80
+
+HEALTHCHECK --interval=5s --timeout=2s --retries=12 \
+  CMD curl --silent --fail localhost:80/ping || exit 1
 
 CMD ["/run.sh"]
