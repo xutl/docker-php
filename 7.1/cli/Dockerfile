@@ -63,8 +63,8 @@ RUN set -xe \
 		--with-bz2 \
 		--with-png-dir \
 		--with-gd \
-		--with-jpeg-dir
-		--with-libzip
+		--with-jpeg-dir \
+		--with-libzip \
 		--with-xmlrpc \
 		--with-libedit \
 		--with-iconv-dir=/usr/local \
