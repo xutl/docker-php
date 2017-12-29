@@ -1,12 +1,6 @@
 FROM xutl/php:7.2-fpm
-LABEL maintainer="xutongle@gmail.com"
 
-RUN set -x \
-#	&& sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
-	&& apt-get update \
-	&& apt-get install -y --no-install-recommends --no-install-suggests \
-		libgd3 \
-	&& rm -r /var/lib/apt/lists/*
+LABEL maintainer="xutongle@gmail.com"
 
 ARG NGINX_VERSION
 
@@ -27,7 +21,7 @@ RUN set -xe \
 		libgd-dev \
 	" \
 #	&& sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
-	&& apt-get update && apt-get install -y --no-install-recommends --no-install-suggests supervisord $buildDeps && rm -r /var/lib/apt/lists/* \
+	&& apt-get update && apt-get install -y --no-install-recommends --no-install-suggests libgd3 supervisord $buildDeps && rm -r /var/lib/apt/lists/* \
 	\
 	&& cd /usr/local/src \
 	&& curl -fSL ${NGINX_TGZ_URL} -o nginx-${NGINX_VERSION}.tar.gz \
