@@ -127,28 +127,3 @@ COPY image-files/ /
 EXPOSE 9000
 
 CMD ["php-fpm"]
-
-RUN cd /usr/local/src && \
-    export CFLAGS="$PHP_CFLAGS" \
-    CPPFLAGS="$PHP_CPPFLAGS" \
-    LDFLAGS="$PHP_LDFLAGS" && \
-    curl -o php-${PHP_VERSION}.tar.gz ${PHP_TGZ_URL} && \
-    tar zxf php-${PHP_VERSION}.tar.gz && rm -f php-${PHP_VERSION}.tar.gz && cd php-${PHP_VERSION} && /sbin/ldconfig && \
-    ./configure --prefix=/usr/local --libdir=/usr/local/lib64 --with-config-file-path=${PHP_INI_DIR} --with-config-file-scan-dir=${PHP_INI_DIR}/php \
-    --with-libxml-dir --with-openssl --with-kerberos --with-zlib --enable-bcmath --with-bz2 --enable-calendar --with-curl \
-    --enable-exif --disable-cgi --enable-fpm --enable-ftp --with-png-dir --with-gd --with-jpeg-dir  --enable-gd-native-ttf \
-    --enable-mbstring --enable-mbregex --enable-shmop --enable-soap --enable-sockets --with-libzip --enable-sysvmsg \
-    --enable-sysvsem --enable-sysvshm --enable-wddx --with-xmlrpc --with-libedit --with-iconv-dir=/usr/local --with-xsl \
-    --enable-zip --with-pcre-regex --with-pcre-jit --with-freetype-dir --enable-xml  --with-mysqli=mysqlnd \
-    --with-pdo-mysql=mysqlnd --with-pdo-sqlite --with-sqlite3 --disable-rpath --enable-inline-optimization  --with-mcrypt \
-    --with-mhash --enable-pcntl --without-pear --with-gettext --enable-fileinfo --enable-intl --enable-opcache --enable-cli \
-    --with-gmp --with-tidy --with-pcre-dir --with-readline --with-zlib-dir --with-libdir=lib64 && \
-    make ZEND_EXTRA_LIBS='-liconv' &&  make install && rm -rf /usr/local/src/php-${PHP_VERSION} && \
-    mkdir -p ${PHP_INI_DIR}/php && mkdir -p /var/lib/php
-
-
-# Add configuration files
-COPY image-files/ /
-
-EXPOSE 9000
-CMD ["php-fpm"]
