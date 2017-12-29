@@ -69,6 +69,9 @@ RUN set -xe \
 	&& rm -rf /usr/local/src/nginx-${NGINX_VERSION} \
 	&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $buildDeps
 
+# Add configuration files
+COPY image-files/ /
+
 ADD run.sh /run.sh
 
 # forward request and error logs to docker log collector

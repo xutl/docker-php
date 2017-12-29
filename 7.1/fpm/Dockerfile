@@ -121,6 +121,6 @@ RUN set -xe \
 # Add configuration files
 COPY image-files/ /
 
-EXPOSE 9000
+#EXPOSE 9000
 
 CMD ["php-fpm"]

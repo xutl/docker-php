@@ -124,6 +124,6 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 # Add configuration files
 COPY image-files/ /
 
-EXPOSE 9000
+#EXPOSE 9000
 
 CMD ["php-fpm"]
