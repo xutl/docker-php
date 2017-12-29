@@ -1,16 +1,15 @@
-FROM xutl/base-php:ubuntu-16.04
+FROM xutl/base-php:xenial
 
 LABEL maintainer="xutongle@gmail.com"
 
 ARG PHP_VERSION
 
 # Environment settings
-ENV PHP_VERSION ${PHP_VERSION:-5.6.32}
-ENV PHP_TGZ_URL http://php.net/distributions/php-${PHP_VERSION}.tar.gz
-
-ENV PHP_INI_DIR /usr/local/etc
-ENV PATH=/root/.composer/vendor/bin:$PATH \
-    COMPOSER_ALLOW_SUPERUSER=1
+ENV PHP_VERSION=${PHP_VERSION:-5.6.32}
+ENV PHP_TGZ_URL=http://cn2.php.net/distributions/php-${PHP_VERSION}.tar.gz \
+	PHP_INI_DIR=/usr/local/etc \
+	PATH=/root/.composer/vendor/bin:$PATH \
+	COMPOSER_ALLOW_SUPERUSER=1
 
 # Apply stack smash protection to functions using local buffers and alloca()
 # Make PHP's main executable position-independent (improves ASLR security mechanism, and has no performance impact on x86_64)
@@ -24,45 +23,35 @@ ENV PHP_LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie"
 
 RUN set -xe \
 	&& buildDeps=" \
-		libmpfr-dev \
-		libpcre3-dev \
-		libcurl4-openssl-dev \
-		libedit-dev \
-		libsqlite3-dev \
+		libxml2-dev \
 		libssl-dev \
-		libicu-dev \
-		libfreetype6-dev \
-		libjpeg-dev \
-		libpnglite-dev \
-		libsasl2-dev \
-		libmhash-dev \
-		libevent-dev \
+		libbz2-dev \
+		libcurl4-openssl-dev \
 		libjpeg-dev \
 		libpng-dev \
-		libtidy-dev \
-		libxslt-dev \
-		libbz2-dev \
-		libxml2-dev \
+		libfreetype6-dev \
 		libgmp-dev \
 		libmcrypt-dev \
+		libedit-dev \
+		libtidy-dev \
+		libxslt-dev \
 	" \
 	\
 #	&& sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
 	&& apt-get update && apt-get install -y --no-install-recommends --no-install-suggests mcrypt $buildDeps && rm -r /var/lib/apt/lists/* \
 	\
-#	&& sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
-	&& cd /usr/local/src \
 	&& export CFLAGS="$PHP_CFLAGS" \
 		CPPFLAGS="$PHP_CPPFLAGS" \
 		LDFLAGS="$PHP_LDFLAGS" \
+	&& if [ ! -f /usr/include/gmp.h ]; then \
+		ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h; \
+	fi \
+	&& cd /usr/local/src \
 	&& curl -fSL ${PHP_TGZ_URL} -o php-${PHP_VERSION}.tar.gz \
 	&& tar zxf php-${PHP_VERSION}.tar.gz \
 	&& rm -f php-${PHP_VERSION}.tar.gz \
 	&& cd php-${PHP_VERSION} \
 	&& /sbin/ldconfig \
-	&& if [ ! -f /usr/include/gmp.h ]; then \
-		ln -s /usr/include/x86_64-linux-gnu/gmp.h /usr/include/gmp.h; \
-	fi \
 	&& ./configure \
 		--prefix=/usr/local \
 		--libdir=/usr/local/lib64 \
