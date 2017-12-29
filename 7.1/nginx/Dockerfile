@@ -21,7 +21,7 @@ RUN set -xe \
 		libgd-dev \
 	" \
 #	&& sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
-	&& apt-get update && apt-get install -y --no-install-recommends --no-install-suggests libgd3 supervisord $buildDeps && rm -r /var/lib/apt/lists/* \
+	&& apt-get update && apt-get install -y --no-install-recommends --no-install-suggests libgd3 supervisor $buildDeps && rm -r /var/lib/apt/lists/* \
 	\
 	&& cd /usr/local/src \
 	&& curl -fSL ${NGINX_TGZ_URL} -o nginx-${NGINX_VERSION}.tar.gz \
