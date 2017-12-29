@@ -61,16 +61,36 @@ RUN set -xe \
 		--with-openssl \
 		--with-kerberos \
 		--with-zlib \
-		--enable-bcmath \
 		--with-bz2 \
-		--enable-calendar \
 		--with-curl \
+		--with-png-dir \
+		--with-gd \
+		--with-jpeg-dir \
+		--with-xmlrpc \
+		--with-libedit \
+		--with-iconv-dir=/usr/local \
+		--with-xsl \
+		--with-mysqli=mysqlnd \
+		--with-pdo-mysql=mysqlnd \
+		--with-pdo-sqlite \
+		--with-sqlite3 \
+		--with-mhash \
+		--with-mcrypt \
+		--without-pear \
+		--with-gettext \
+		--with-gmp \
+		--with-tidy \
+		--with-pcre-dir \
+		--with-readline \
+		--with-pcre-regex \
+		--with-freetype-dir \
+		--with-zlib-dir \
+		--with-libdir=lib64 \
+		--enable-bcmath \
+		--enable-calendar \
 		--enable-exif \
 		--disable-cgi \
 		--enable-ftp \
-		--with-png-dir \
-		--with-gd \
-		--with-jpeg-dir  \
 		--enable-gd-native-ttf \
 		--enable-mbstring \
 		--enable-mbregex \
@@ -81,35 +101,15 @@ RUN set -xe \
 		--enable-sysvsem \
 		--enable-sysvshm \
 		--enable-wddx \
-		--with-xmlrpc \
-		--with-libedit \
-		--with-iconv-dir=/usr/local \
-		--with-xsl \
 		--enable-zip \
-		--with-pcre-regex \
-		--with-freetype-dir \
 		--enable-xml  \
-		--with-mysqli=mysqlnd \
-		--with-pdo-mysql=mysqlnd \
-		--with-pdo-sqlite \
-		--with-sqlite3 \
 		--disable-rpath \
 		--enable-inline-optimization  \
-		--with-mcrypt \
-		--with-mhash \
 		--enable-pcntl \
-		--without-pear \
-		--with-gettext \
 		--enable-fileinfo \
 		--enable-intl \
 		--enable-opcache \
 		--enable-cli \
-		--with-gmp \
-		--with-tidy \
-		--with-pcre-dir \
-		--with-readline \
-		--with-zlib-dir \
-		--with-libdir=lib64 \
     && make -j "$(nproc)" ZEND_EXTRA_LIBS='-liconv' \
     && make install \
     && rm -rf /usr/local/src/php-${PHP_VERSION} \
