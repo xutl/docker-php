@@ -111,12 +111,12 @@ RUN set -xe \
 		--enable-opcache \
 		--enable-cli \
 		--enable-fpm \
-    && make -j "$(nproc)" ZEND_EXTRA_LIBS='-liconv' \
-    && make install \
-    && rm -rf /usr/local/src/php-${PHP_VERSION} \
-    && mkdir -p ${PHP_INI_DIR}/php \
-    && mkdir -p /var/lib/php \
-    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $buildDeps
+	&& make -j "$(nproc)" ZEND_EXTRA_LIBS='-liconv' \
+	&& make install \
+	&& rm -rf /usr/local/src/php-${PHP_VERSION} \
+	&& mkdir -p ${PHP_INI_DIR}/php \
+	&& mkdir -p /var/lib/php \
+	&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $buildDeps
 
 RUN php -m
 

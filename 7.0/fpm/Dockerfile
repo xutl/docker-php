@@ -36,6 +36,7 @@ RUN set -xe \
 		libedit-dev \
 		libtidy-dev \
 		libxslt-dev \
+		libzip-dev \
 	" \
 	\
 	&& sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \

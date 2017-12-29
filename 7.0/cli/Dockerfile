@@ -36,6 +36,7 @@ RUN set -xe \
 		libedit-dev \
 		libtidy-dev \
 		libxslt-dev \
+		libzip-dev \
 	" \
 	\
 	&& sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
@@ -109,7 +110,7 @@ RUN set -xe \
 		--enable-intl \
 		--enable-opcache \
 		--enable-cli \
-	&& make ZEND_EXTRA_LIBS='-liconv' \
+	&& make -j "$(nproc)" ZEND_EXTRA_LIBS='-liconv' \
 	&& make install \
 	&& rm -rf /usr/local/src/php-${PHP_VERSION} \
 	&& mkdir -p ${PHP_INI_DIR}/php \
