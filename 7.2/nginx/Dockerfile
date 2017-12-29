@@ -26,7 +26,7 @@ RUN set -xe \
 		libxslt-dev \
 		libgd-dev \
 	" \
-	&& sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
+#	&& sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
 	&& apt-get update && apt-get install -y --no-install-recommends --no-install-suggests supervisord $buildDeps && rm -r /var/lib/apt/lists/* \
 	\
 	&& cd /usr/local/src \
