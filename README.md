@@ -7,8 +7,9 @@
 
 ```shell
 docker build --rm --build-arg PHP_VERSION=5.4.45 .
-
 docker build --rm --build-arg PHP_VERSION=5.5.37 .
-
 docker build --rm --build-arg PHP_VERSION=5.6.32 .
+docker build --rm --build-arg PHP_VERSION=7.0.25 .
+docker build --rm --build-arg PHP_VERSION=7.1.12 .
+docker build --rm --build-arg PHP_VERSION=7.2.0 .
 ```
