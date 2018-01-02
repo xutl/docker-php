@@ -72,12 +72,10 @@ RUN set -xe \
 # Add configuration files
 COPY image-files/ /
 
-ADD run.sh /run.sh
-
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log \
-	&& chmod 700 /run.sh \
+	&& chmod 700 /appctl.sh \
 	&& {\
 		echo "<?php"; \
 		echo "phpinfo();"; \
