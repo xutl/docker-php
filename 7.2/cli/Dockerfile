@@ -120,4 +120,6 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 # Add configuration files
 COPY image-files/ /
 
+ENTRYPOINT ["docker-php-entrypoint"]
+
 CMD ["php", "-a"]
