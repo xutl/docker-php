@@ -117,11 +117,12 @@ RUN set -xe \
 	&& mkdir -p /var/lib/php \
 	&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $buildDeps
 
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-    php composer-setup.php --install-dir=/usr/local/bin --filename=composer && php -r "unlink('composer-setup.php');"
-
 # Add configuration files
 COPY image-files/ /
+
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer && php -r "unlink('composer-setup.php');" \
+    && chown +x /usr/local/bin/docker-php-entrypoint.sh
 
 ENTRYPOINT ["docker-php-entrypoint"]
 
