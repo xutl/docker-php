@@ -121,9 +121,6 @@ RUN set -xe \
 COPY image-files/ /
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer && php -r "unlink('composer-setup.php');" \
-    && chmod 0700 /usr/local/bin/docker-php-entrypoint.sh
-
-ENTRYPOINT ["docker-php-entrypoint"]
+    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer && php -r "unlink('composer-setup.php');"
 
 CMD ["php", "-a"]
