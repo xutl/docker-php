@@ -119,6 +119,9 @@ COPY image-files/ /
 
 RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 	&& php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-	&& php -r "unlink('composer-setup.php');"
+	&& php -r "unlink('composer-setup.php');" \
+	&& composer global require hirak/prestissimo --optimize-autoloader \
+	&& composer global dumpautoload --optimize \
+	&& composer clear-cache
 
 CMD ["php", "-a"]
