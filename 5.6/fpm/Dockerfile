@@ -118,8 +118,13 @@ RUN set -xe \
 	&& mkdir -p /var/lib/php \
 	&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $buildDeps
 
-RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && \
-    php composer-setup.php --install-dir=/usr/local/bin --filename=composer && php -r "unlink('composer-setup.php');"
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+	&& php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+	&& php -r "unlink('composer-setup.php');" \
+	&& composer global require --optimize-autoloader \
+		"hirak/prestissimo" && \
+	&& composer global dumpautoload --optimize \
+    && composer clear-cache
 
 # Add configuration files
 COPY image-files/ /
