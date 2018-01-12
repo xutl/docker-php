@@ -121,6 +121,10 @@ RUN set -xe \
 # Add configuration files
 COPY image-files/ /
 
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+	&& php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+	&& php -r "unlink('composer-setup.php');"
+
 #EXPOSE 9000
 
 CMD ["php-fpm"]
