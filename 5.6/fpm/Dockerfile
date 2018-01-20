@@ -37,7 +37,7 @@ RUN set -xe \
 		libxslt-dev \
 	" \
 	\
-#	&& sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
+	&& sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
 	&& apt-get update && apt-get install -y --no-install-recommends --no-install-suggests mcrypt $buildDeps && rm -r /var/lib/apt/lists/* \
 	\
 	&& export CFLAGS="$PHP_CFLAGS" \
@@ -128,6 +128,6 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 	&& composer global dumpautoload --optimize \
 	&& composer clear-cache
 
-#EXPOSE 9000
+EXPOSE 9000
 
 CMD ["php-fpm"]
