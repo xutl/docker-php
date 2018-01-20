@@ -110,6 +110,7 @@ RUN set -xe \
 		--enable-intl \
 		--enable-opcache \
 		--enable-cli \
+		--enable-fpm \
 	&& make -j "$(nproc)" ZEND_EXTRA_LIBS='-liconv' \
 	&& make install \
 	&& rm -rf /usr/local/src/php-${PHP_VERSION} \
