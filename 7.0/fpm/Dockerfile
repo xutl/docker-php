@@ -128,6 +128,6 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 	&& composer global dumpautoload --optimize \
 	&& composer clear-cache
 
-#EXPOSE 9000
+EXPOSE 9000
 
 CMD ["php-fpm"]
