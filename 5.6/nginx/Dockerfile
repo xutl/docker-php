@@ -1,4 +1,4 @@
-FROM xutl/php:5.6-fpm
+FROM xutl/base-php:xenial
 
 LABEL maintainer="xutongle@gmail.com"
 
@@ -192,7 +192,7 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 	&& composer global require hirak/prestissimo --optimize-autoloader \
 	&& composer global dumpautoload --optimize \
 	&& composer clear-cache
-	
+
 # forward request and error logs to docker log collector
 RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 	&& ln -sf /dev/stderr /var/log/nginx/error.log \
