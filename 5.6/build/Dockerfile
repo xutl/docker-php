@@ -10,6 +10,20 @@ RUN apt-get update \
 	&& mkdir -p ~/.ssh \
 	&& printf "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
 
+RUN set -xe \
+	&& xdebugVersion=2.5.5 \
+	&& cd /usr/local/src \
+	&& curl -fSL http://pecl.php.net/get/xdebug-${msgpackVersion}.tgz -o xdebug-${msgpackVersion}.tgz \
+	&& tar zxf xdebug-${msgpackVersion}.tgz \
+	&& rm -rf xdebug-${msgpackVersion}.tgz \
+	&& cd xdebug-${msgpackVersion} \
+	&& phpize \
+	&& ./configure --enable-xdebug \
+	&& make -j "$(nproc)" \
+	&& make install \
+	&& rm -rf /usr/local/src/xdebug-${msgpackVersion} \
+	&& echo "zend_extension=xdebug.so" >> ${PHP_INI_DIR}/php/xdebug.ini
+
 ENV YUI_COMPRESSOR_VERSION=2.4.8
 ENV YUI_COMPRESSOR_JAR=https://github.com/yui/yuicompressor/releases/download/v${YUI_COMPRESSOR_VERSION}/yuicompressor-${YUI_COMPRESSOR_VERSION}.jar
 
@@ -81,3 +95,4 @@ RUN set -ex \
 	&& ln -s /opt/yarn/bin/yarn /usr/local/bin/yarn \
 	&& ln -s /opt/yarn/bin/yarn /usr/local/bin/yarnpkg \
 	&& rm yarn-v${YARN_VERSION}.tar.gz.asc yarn-v${YARN_VERSION}.tar.gz
+
