@@ -1,4 +1,4 @@
-FROM xutl/php:5.6-cli
+FROM xutl/php:5.6-fpm
 
 LABEL maintainer="xutongle@gmail.com"
 
