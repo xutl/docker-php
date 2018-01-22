@@ -10,20 +10,21 @@ RUN apt-get update \
 	&& mkdir -p ~/.ssh \
 	&& printf "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
 
+ENV XDEBUG_VERSION 2.5.5
+
 RUN set -xe \
-	&& xdebugVersion=2.5.5 \
 	&& cd /usr/local/src \
-	&& curl -fSL http://pecl.php.net/get/xdebug-${msgpackVersion}.tgz -o xdebug-${msgpackVersion}.tgz \
-	&& tar zxf xdebug-${msgpackVersion}.tgz \
-	&& rm -rf xdebug-${msgpackVersion}.tgz \
-	&& cd xdebug-${msgpackVersion} \
+	&& curl -fSL http://pecl.php.net/get/xdebug-${XDEBUG_VERSION}.tgz -o xdebug-${XDEBUG_VERSION}.tgz \
+	&& tar zxf xdebug-${XDEBUG_VERSION}.tgz \
+	&& rm -rf xdebug-${XDEBUG_VERSION}.tgz \
+	&& cd xdebug-${XDEBUG_VERSION} \
 	&& phpize \
 	&& ./configure --enable-xdebug \
 	&& make -j "$(nproc)" \
 	&& make install \
-	&& rm -rf /usr/local/src/xdebug-${msgpackVersion} \
+	&& rm -rf /usr/local/src/xdebug-${XDEBUG_VERSION} \
 	&& echo "zend_extension=xdebug.so" >> ${PHP_INI_DIR}/php/xdebug.ini
-	
+
 ENV YUI_COMPRESSOR_VERSION=2.4.8
 ENV YUI_COMPRESSOR_JAR=https://github.com/yui/yuicompressor/releases/download/v${YUI_COMPRESSOR_VERSION}/yuicompressor-${YUI_COMPRESSOR_VERSION}.jar
 
