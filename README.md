@@ -16,14 +16,18 @@ Container                               | Distribution name        | PHP Version
 
 Directory                       | Description
 ------------------------------- | ------------------------------------------------------------------------------
-`/usr/local/etc/php.ini`         | PHP configuration
+`/usr/local/etc/php-fpm.d`     | php-fpm pool configuration
 `/usr/local/etc/nginx`     | Nginx configuration path
+`/usr/local/etc/nginx/sites`     | Nginx sites configuration path
 
-
+File                                                | Description
+--------------------------------------------------- | ------------------------------------------------------------------------------
+`/usr/local/etc/php.ini`         | PHP configuration
+`/usr/local/etc/nginx/nginx.conf`                 | Global nginx configuration options
+`/usr/local/etc/php-fpm.d/www.conf`     | php-fpm pool configuration
+`/usr/local/etc/php/fpm/php-fpm.conf`              | PHP FPM daemon configuration
 
 ```shell
-docker build --rm --build-arg PHP_VERSION=5.4.45 .
-docker build --rm --build-arg PHP_VERSION=5.5.37 .
 docker build --rm --build-arg PHP_VERSION=5.6.32 .
 docker build --rm --build-arg PHP_VERSION=7.0.25 .
 docker build --rm --build-arg PHP_VERSION=7.1.12 .
