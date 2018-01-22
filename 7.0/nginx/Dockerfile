@@ -9,13 +9,6 @@ ENV NGINX_VERSION=${NGINX_VERSION:-1.13.8}
 ENV NGINX_TGZ_URL http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz
 ENV NGINX_INI_DIR=/usr/local/etc/nginx
 
-ENV PHP_VERSION ${PHP_VERSION:-7.0.26}
-ENV PHP_TGZ_URL http://php.net/distributions/php-${PHP_VERSION}.tar.gz
-ENV PHP_INI_DIR=/usr/local/etc \
-	PATH=/root/.composer/vendor/bin:$PATH \
-	TERM=linux \
-	COMPOSER_ALLOW_SUPERUSER=1
-
 RUN set -xe \
 	&& buildDeps=" \
 		libpcre3-dev \
