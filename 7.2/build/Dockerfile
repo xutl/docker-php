@@ -10,6 +10,22 @@ RUN apt-get update \
 	&& mkdir -p ~/.ssh \
 	&& printf "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
 
+ENV YUI_COMPRESSOR_VERSION=2.4.8
+ENV YUI_COMPRESSOR_JAR=https://github.com/yui/yuicompressor/releases/download/v${YUI_COMPRESSOR_VERSION}/yuicompressor-${YUI_COMPRESSOR_VERSION}.jar
+
+RUN cd /usr/local/src \
+	&& curl -fSL ${YUI_COMPRESSOR_JAR} -o /usr/local/bin/yuicompressor.jar
+
+ENV COMPILER_VERSION=20171203
+ENV COMPILER_TGZ=http://dl.google.com/closure-compiler/compiler-${COMPILER_VERSION}.tar.gz
+
+RUN mkdir -p /tmp/c \
+	&& cd /tmp/c \
+	&& curl -fSL ${COMPILER_TGZ} -o compiler-${COMPILER_VERSION}.tar.gz \
+	&& tar zxf compiler-${COMPILER_VERSION}.tar.gz \
+	&& mv -v closure-compiler-v${COMPILER_VERSION}.jar /usr/local/bin/closure-compiler.jar \
+	&& rm -rf /tmp/c
+
 # gpg keys listed at https://github.com/nodejs/node#release-team
 RUN set -ex \
 	&& for key in \
