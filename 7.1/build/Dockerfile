@@ -2,8 +2,6 @@ FROM xutl/php:7.1-cli
 
 LABEL maintainer="xutongle@gmail.com"
 
-LABEL maintainer="xutongle@gmail.com"
-
 RUN apt-get update \
 	&& apt-get install -y openssh-client git subversion curl wget nano unzip diffutils ntp openjdk-8-jdk --no-install-recommends \
 	&& rm -r /var/lib/apt/lists/* \
