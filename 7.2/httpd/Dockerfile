@@ -40,7 +40,7 @@ RUN set -xe \
 	" \
 	\
 #	&& sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
-	&& apt-get update && apt-get install -y --no-install-recommends --no-install-suggests mcrypt $buildDeps && rm -r /var/lib/apt/lists/* \
+	&& apt-get update && apt-get install -y --no-install-recommends --no-install-suggests $buildDeps && rm -r /var/lib/apt/lists/* \
 	\
 	&& export CFLAGS="$PHP_CFLAGS" \
 		CPPFLAGS="$PHP_CPPFLAGS" \
@@ -60,8 +60,8 @@ RUN set -xe \
 		--with-openssl \
 		--with-kerberos \
 		--with-zlib \
-		--with-curl \
 		--with-bz2 \
+		--with-curl \
 		--with-png-dir \
 		--with-gd \
 		--with-jpeg-dir \
@@ -70,29 +70,26 @@ RUN set -xe \
 		--with-libedit \
 		--with-iconv-dir=/usr/local \
 		--with-xsl \
-		--with-gmp \
-		--with-tidy \
-		--with-pcre-dir \
-		--with-readline \
 		--with-pcre-regex \
 		--with-pcre-jit \
 		--with-freetype-dir \
-		--with-zlib-dir \
-		--without-pear \
-		--with-mcrypt \
 		--with-mysqli=mysqlnd \
 		--with-pdo-mysql=mysqlnd \
 		--with-pdo-sqlite \
 		--with-sqlite3 \
 		--with-mhash \
+		--without-pear \
 		--with-gettext \
+		--with-gmp --with-tidy \
+		--with-pcre-dir \
+		--with-readline \
+		--with-zlib-dir \
 		--with-libdir=lib64 \
 		--enable-bcmath \
-		--enable-calendar \
+		--enable-calendar  \
 		--enable-exif \
 		--disable-cgi \
 		--enable-ftp \
-		--enable-gd-native-ttf \
 		--enable-mbstring \
 		--enable-mbregex \
 		--enable-shmop \
@@ -120,6 +117,13 @@ RUN set -xe \
 
 # Add configuration files
 COPY image-files/ /
+
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+	&& php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+	&& php -r "unlink('composer-setup.php');" \
+	&& composer global require hirak/prestissimo --optimize-autoloader \
+	&& composer global dumpautoload --optimize \
+	&& composer clear-cache
 
 ENTRYPOINT ["docker-php-entrypoint"]
 

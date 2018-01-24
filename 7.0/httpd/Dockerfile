@@ -60,32 +60,32 @@ RUN set -xe \
 		--with-openssl \
 		--with-kerberos \
 		--with-zlib \
-		--with-curl \
-		--with-bz2 \
-		--with-png-dir \
-		--with-gd \
-		--with-jpeg-dir \
-		--with-libzip \
-		--with-xmlrpc \
-		--with-libedit \
-		--with-iconv-dir=/usr/local \
-		--with-xsl \
-		--with-gmp \
-		--with-tidy \
-		--with-pcre-dir \
-		--with-readline \
-		--with-pcre-regex \
-		--with-pcre-jit \
-		--with-freetype-dir \
-		--with-zlib-dir \
-		--without-pear \
-		--with-mcrypt \
 		--with-mysqli=mysqlnd \
 		--with-pdo-mysql=mysqlnd \
 		--with-pdo-sqlite \
 		--with-sqlite3 \
+		--with-bz2 \
+		--with-png-dir \
+		--with-gd \
+		--with-jpeg-dir \
+		--with-curl \
+		--with-mcrypt \
 		--with-mhash \
+		--with-gmp \
+		--without-pear \
 		--with-gettext \
+		--with-tidy \
+		--with-pcre-dir \
+		--with-readline \
+		--with-libzip \
+		--with-zlib-dir \
+		--with-xmlrpc \
+		--with-libedit \
+		--with-iconv-dir=/usr/local \
+		--with-xsl \
+		--with-pcre-regex \
+		--with-pcre-jit \
+		--with-freetype-dir \
 		--with-libdir=lib64 \
 		--enable-bcmath \
 		--enable-calendar \
@@ -105,13 +105,13 @@ RUN set -xe \
 		--enable-zip \
 		--enable-xml \
 		--disable-rpath \
-		--enable-inline-optimization \
+		--enable-inline-optimization  \
 		--enable-pcntl \
 		--enable-fileinfo \
 		--enable-intl \
 		--enable-opcache \
 		--enable-cli \
-	&& make ZEND_EXTRA_LIBS='-liconv' \
+	&& make -j "$(nproc)" ZEND_EXTRA_LIBS='-liconv' \
 	&& make install \
 	&& rm -rf /usr/local/src/php-${PHP_VERSION} \
 	&& mkdir -p ${PHP_INI_DIR}/php \
@@ -120,6 +120,13 @@ RUN set -xe \
 
 # Add configuration files
 COPY image-files/ /
+
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+	&& php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
+	&& php -r "unlink('composer-setup.php');" \
+	&& composer global require hirak/prestissimo --optimize-autoloader \
+	&& composer global dumpautoload --optimize \
+	&& composer clear-cache
 
 ENTRYPOINT ["docker-php-entrypoint"]
 
