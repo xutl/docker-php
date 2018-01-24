@@ -18,7 +18,7 @@ ENV PHP_INI_DIR=/usr/local/etc \
 # Enable linker optimization (this sorts the hash buckets to improve cache locality, and is non-default)
 # Adds GNU HASH segments to generated executables (this is used if present, and is much faster than sysv hash; in this configuration, sysv hash is also generated)
 # https://github.com/docker-library/php/issues/272
-ENV PHP_CFLAGS="-fstack-protector-strong -fpic -fpie -O2"
+ENV PHP_CFLAGS="-O2"
 ENV PHP_CPPFLAGS="$PHP_CFLAGS"
 ENV PHP_LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie"
 
@@ -55,7 +55,7 @@ RUN set -xe \
 		--libdir=/usr/local/lib64 \
 		--with-config-file-path=${PHP_INI_DIR} \
 		--with-config-file-scan-dir=${PHP_INI_DIR}/php \
-		--with-apxs2=/usr/local/apache/bin/apxs \
+		--with-apxs2=${HTTPD_PREFIX}/bin/apxs \
 		--with-libxml-dir \
 		--with-openssl \
 		--with-kerberos \
@@ -127,12 +127,9 @@ ENTRYPOINT ["docker-php-entrypoint"]
 RUN {\
 		echo "<?php"; \
 		echo "phpinfo();"; \
-	} > /usr/local/html/info.php \
-	&& chmod 775 /usr/local/html/info.php
+	} > /usr/local/apache2/htdocs/info.php \
+	&& chmod 775 /usr/local/apache2/htdocs/info.php
 
 EXPOSE 80
-
-HEALTHCHECK --interval=5s --timeout=2s --retries=12 \
-  CMD curl --silent --fail localhost:80/ping || exit 1
 
 CMD ["apache2-foreground"]
