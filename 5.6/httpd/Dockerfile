@@ -1,4 +1,4 @@
-FROM xutl/base-php:xenial
+FROM xutl/httpd:2.4-php
 
 LABEL maintainer="xutongle@gmail.com"
 
