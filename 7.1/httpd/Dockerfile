@@ -1,66 +1,16 @@
-FROM xutl/base-php:xenial
+FROM xutl/httpd:2.4-php
 
 LABEL maintainer="xutongle@gmail.com"
 
-ARG HTTPD_VERSION
 ARG PHP_VERSION
 
 # Environment settings
-ENV HTTPD_VERSION=${HTTPD_VERSION:-2.4.29}
-ENV HTTPD_TGZ_URL http://mirrors.hust.edu.cn/apache/httpd/httpd-${HTTPD_VERSION}.tar.gz
 ENV PHP_VERSION ${PHP_VERSION:-7.1.13}
 ENV PHP_TGZ_URL http://php.net/distributions/php-${PHP_VERSION}.tar.gz
 ENV PHP_INI_DIR=/usr/local/etc \
 	PATH=/root/.composer/vendor/bin:$PATH \
 	TERM=linux \
 	COMPOSER_ALLOW_SUPERUSER=1
-
-RUN set -xe \
-	&& buildDeps=" \
-		libpcre3-dev \
-		libzip-dev \
-		libcurl4-openssl-dev \
-		libssl-dev \
-		libexpat1-dev \
-	" \
-#	&& sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
-	&& apt-get update && apt-get install -y --no-install-recommends --no-install-suggests libpcre3 libzip4 expat $buildDeps && rm -r /var/lib/apt/lists/* \
-	\
-	&& AprVersion=1.6.3 \
-		AprUtilVersion=1.6.1 \
-	&& cd /usr/local/src \
-	&& curl -fSL ${HTTPD_TGZ_URL} -o httpd-${HTTPD_VERSION}.tar.gz \
-	&& tar zxf httpd-${HTTPD_VERSION}.tar.gz \
-	&& rm -rf httpd-${HTTPD_VERSION}.tar.gz \
-	&& cd httpd-${HTTPD_VERSION}/srclib \
-	&& curl -fSL http://mirrors.hust.edu.cn/apache/apr/apr-${AprVersion}.tar.gz -o apr-${AprVersion}.tar.gz \
-	&& curl -fSL http://mirrors.hust.edu.cn/apache/apr/apr-util-${AprUtilVersion}.tar.gz -o apr-util-${AprUtilVersion}.tar.gz \
-	&& tar zxf apr-${AprVersion}.tar.gz \
-	&& tar zxf apr-util-${AprUtilVersion}.tar.gz \
-	&& mv apr-${AprVersion} apr \
-	&& mv apr-util-${AprUtilVersion} apr-util \
-	&& rm -f apr-${AprVersion}.tar.gz \
-	&& rm -f apr-util-${AprUtilVersion}.tar.gz \
-	&& cd /usr/local/src/httpd-${HTTPD_VERSION}/ \
-	&& ./configure \
-		--prefix=/usr/local/apache \
-		--enable-mods-shared=most \
-		--enable-headers \
-		--enable-mime-magic \
-		--enable-proxy \
-		--enable-so \
-		--enable-rewrite \
-		--enable-ssl \
-		--enable-deflate \
-		--with-pcre \
-		--with-included-apr \
-		--with-apr-util \
-		--enable-mpms-shared=all \
-		--enable-remoteip \
-	&& make -j "$(nproc)" \
-	&& make install \
-	&& rm -rf /usr/local/src/httpd-${HTTPD_VERSION} \
-	&& apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false $buildDeps
 
 # Apply stack smash protection to functions using local buffers and alloca()
 # Make PHP's main executable position-independent (improves ASLR security mechanism, and has no performance impact on x86_64)
@@ -174,9 +124,7 @@ COPY image-files/ /
 ENTRYPOINT ["docker-php-entrypoint"]
 
 # forward request and error logs to docker log collector
-RUN ln -sf /dev/stdout /var/log/nginx/access.log \
-	&& ln -sf /dev/stderr /var/log/nginx/error.log \
-	&& {\
+RUN {\
 		echo "<?php"; \
 		echo "phpinfo();"; \
 	} > /usr/local/html/info.php \
