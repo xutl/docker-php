@@ -132,4 +132,4 @@ RUN {\
 
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+CMD ["httpd-foreground"]
