@@ -130,4 +130,13 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 
 ENTRYPOINT ["docker-php-entrypoint"]
 
-CMD ["php", "-a"]
+# forward request and error logs to docker log collector
+RUN {\
+		echo "<?php"; \
+		echo "phpinfo();"; \
+	} > /usr/local/apache2/htdocs/info.php \
+	&& chmod 775 /usr/local/apache2/htdocs/info.php
+
+EXPOSE 80
+
+CMD ["apache2-foreground"]
