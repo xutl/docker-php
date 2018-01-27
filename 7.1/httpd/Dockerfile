@@ -121,7 +121,7 @@ RUN set -xe \
 # Add configuration files
 COPY image-files/ /
 
-ENTRYPOINT ["docker-php-entrypoint"]
+ENTRYPOINT ["docker-entrypoint"]
 
 # forward request and error logs to docker log collector
 RUN {\

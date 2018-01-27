@@ -128,6 +128,6 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
 	&& composer global dumpautoload --optimize \
 	&& composer clear-cache
 
-ENTRYPOINT ["docker-php-entrypoint"]
+ENTRYPOINT ["docker-entrypoint"]
 
 CMD ["php-fpm"]
