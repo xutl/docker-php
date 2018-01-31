@@ -26,6 +26,34 @@ File                                                | Description
 `/usr/local/etc/php-fpm.d/www.conf`               | php-fpm pool configuration
 `/usr/local/etc/php/fpm/php-fpm.conf`             | PHP FPM daemon configuration
 
+## Expand
+
+Expand                                                | Version
+--------------------------------------------------- | ------------------------------------------------------------------------------
+`msgpack`                          | 0.5.7/2.0.2
+`igbinary`                 | 2.0.5
+`memcached`               | 2.2.0/3.0.4
+`redis`             | 3.1.6
+`yaml`             | 1.3.1/2.0.2
+`xdebug`             | 2.5.5 Only build tags
+
+## Build Tag
+
+openssh-client git subversion curl wget nano unzip diffutils ntp openjdk-8-jdk yuicompressor closure-compiler nodejs-8.9.4 yarn-1.3.2
+
+### Path
+/usr/local/bin/yuicompressor.jar
+/usr/local/bin/closure-compiler.jar
+
+
+Expand                                                | Version
+--------------------------------------------------- | ------------------------------------------------------------------------------
+`msgpack`                          | 0.5.7/2.0.2
+`igbinary`                 | 2.0.5
+`memcached`               | 2.2.0/3.0.4
+`redis`             | 3.1.6
+`yaml`             | 1.3.1/2.0.2
+`xdebug`             | 2.5.5 Only build tags
 
 ```shell
 docker build --rm --build-arg PHP_VERSION=5.6.32 .
