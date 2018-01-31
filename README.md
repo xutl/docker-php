@@ -45,16 +45,6 @@ openssh-client git subversion curl wget nano unzip diffutils ntp openjdk-8-jdk y
 /usr/local/bin/yuicompressor.jar
 /usr/local/bin/closure-compiler.jar
 
-
-Expand                                                | Version
---------------------------------------------------- | ------------------------------------------------------------------------------
-`msgpack`                          | 0.5.7/2.0.2
-`igbinary`                 | 2.0.5
-`memcached`               | 2.2.0/3.0.4
-`redis`             | 3.1.6
-`yaml`             | 1.3.1/2.0.2
-`xdebug`             | 2.5.5 Only build tags
-
 ```shell
 docker build --rm --build-arg PHP_VERSION=5.6.32 .
 docker build --rm --build-arg PHP_VERSION=7.0.25 .
