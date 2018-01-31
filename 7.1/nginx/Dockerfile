@@ -86,4 +86,4 @@ EXPOSE 80
 HEALTHCHECK --interval=5s --timeout=2s --retries=12 \
   CMD curl --silent --fail localhost:80/ping || exit 1
 
-CMD ["supervisord", "-n", "-c", "/etc/supervisor/supervisord.conf"]
+CMD ["supervisord-foreground"]
