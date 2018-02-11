@@ -49,7 +49,7 @@ File                                                | Description
 `/usr/local/etc/php.ini`                          | PHP configuration
 `/usr/local/etc/nginx/nginx.conf`                 | Global nginx configuration options
 `/usr/local/etc/php-fpm.d/www.conf`               | php-fpm pool configuration
-`/usr/local/etc/php/fpm/php-fpm.conf`             | PHP FPM daemon configuration
+`/usr/local/etc/php/php-fpm.conf`             | PHP FPM daemon configuration
 
 ## Expand
 
