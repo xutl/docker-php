@@ -10,7 +10,7 @@ RUN apt-get update \
 	&& mkdir -p ~/.ssh \
 	&& printf "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
 
-ENV XDEBUG_VERSION 2.6.0beta1
+ENV XDEBUG_VERSION 2.6.0
 
 RUN set -xe \
 	&& cd /usr/local/src \
