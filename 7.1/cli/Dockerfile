@@ -5,7 +5,7 @@ LABEL maintainer="xutongle@gmail.com"
 ARG PHP_VERSION
 
 # Environment settings
-ENV PHP_VERSION ${PHP_VERSION:-7.1.13}
+ENV PHP_VERSION ${PHP_VERSION:-7.1.14}
 ENV PHP_TGZ_URL http://php.net/distributions/php-${PHP_VERSION}.tar.gz
 ENV PHP_INI_DIR=/usr/local/etc \
 	PATH=/root/.composer/vendor/bin:$PATH \
@@ -133,7 +133,7 @@ RUN set -xe \
 		memcachedVersion=3.0.4 \
 		redisVersion=3.1.6 \
 		yamlVersion=2.0.2 \
-		swooleVersion=2.0.12 \
+		swooleVersion=2.1.0 \
 	&& cd /usr/local/src \
 	&& curl -fSL http://pecl.php.net/get/msgpack-${msgpackVersion}.tgz -o msgpack-${msgpackVersion}.tgz \
 	&& tar zxf msgpack-${msgpackVersion}.tgz \
