@@ -120,7 +120,7 @@ RUN set -xe \
 		libyaml-dev \
 		libnghttp2-dev \
 		libssl-dev \
-		libzip-dev \
+		zlib1g-dev \
 	" \
 	\
 #	&& sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/' /etc/apt/sources.list \
