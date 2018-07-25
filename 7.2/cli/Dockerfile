@@ -28,7 +28,7 @@ RUN set -xe \
 		libssl-dev \
 		libbz2-dev \
 		libcurl4-openssl-dev \
-		libjpeg-dev \
+		libjpeg9-dev \
 		libpng-dev \
 		libfreetype6-dev \
 		libgmp-dev \
